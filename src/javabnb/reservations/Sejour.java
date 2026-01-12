@@ -5,12 +5,13 @@ import javabnb.logement.Logement;
 import javabnb.utils.Utils;
 
 
-public class Sejour implements Reservable {
+public abstract class Sejour implements Reservable {
 
     private Date dateDebut;
     private int dureeNuits;
-    private Logement hebergement;
+    Logement hebergement;
     private int nombrePersonnes;
+    protected int prix;
 
     public Sejour(Date laDate, int duree, Logement leLogement, int personnes) {
         // Il faut vérifier que la durée est correcte
@@ -27,6 +28,9 @@ public class Sejour implements Reservable {
         this.dureeNuits = duree;
         this.hebergement = leLogement;
         this.nombrePersonnes = personnes;
+        
+        // Calcul du prix immédiatement
+        miseAJourDuPrixDuSejour();
     }
 
     @Override
@@ -50,46 +54,28 @@ public class Sejour implements Reservable {
             descriptionPersonnes = this.nombrePersonnes + " voyageurs";
         }
         System.out.println("Nombre de voyageurs : " + descriptionPersonnes);
-        System.out.println("Prix total du séjour : " + calculerPrixTotal() + "€");
+        System.out.println("Prix total du séjour : " + this.prix + "€");
     }
-
-    private int calculerPrixTotal() {
-        int montantTotal = this.hebergement.getPrixNuit() * this.dureeNuits;
-
-        /*
-         Il y a une réduction si on reste plus de 5 nuits
-         Je multiplie par 0.8 pour avoir 20% de réduction
-         */
-        if (this.dureeNuits > 5) {
-            montantTotal = (int) (montantTotal * 0.8);
-        }
-
-        return montantTotal;
-    }
-
+    
+    @Override
     public boolean aUneDateArriveeCorrecte() {
         Date maintenant = new Date();
-        if (this.dateDebut.after(maintenant)) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.dateDebut.after(maintenant);
     }
 
-    public boolean aUnNombreDeNuitsCorrect() {
-        if (this.dureeNuits >= 1 && this.dureeNuits <= 31) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    @Override
     public boolean aUnNombreDeVoyageursCorrect() {
-        if (this.nombrePersonnes <= this.hebergement.getCapaciteMax()) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.nombrePersonnes <= this.hebergement.getCapaciteMax();
     }
+
+    public int getDureeNuits() {
+        return dureeNuits;
+    }
+
+    public Logement getHebergement() {
+        return hebergement;
+    }
+
+    public abstract void miseAJourDuPrixDuSejour();
 
 }

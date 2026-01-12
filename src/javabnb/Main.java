@@ -7,6 +7,8 @@ import javabnb.Utilisateurs.Voyageur;
 import javabnb.Utilisateurs.Hote;
 import javabnb.reservations.Sejour;
 import javabnb.reservations.Reservation;
+import javabnb.reservations.SejourFactory;
+import java.util.Date;
 
 
 public class Main {
@@ -19,9 +21,14 @@ public class Main {
         Maison maisonParis = new Maison(proprietaire, 95, "23 avenue des Fleurs, 75015 Paris", 85, 5, 40, false);
         Appartement appartBordeaux = new Appartement(proprietaire, 65, "12 rue Saint-Michel, 33000 Bordeaux", 55, 3, 8, 2);
 
-        Sejour leSejour = new Sejour(Utils.creerDate(5, 7, 2024), 4, maisonParis, 3);
+        int duree = 20;
+        Date dateArrivee = Utils.creerDate(5, 7, 2024);
         
-        // Création de la réservation (Le Voyageur réserve le séjour)
+        int nbVoyageurs = 6;
+        
+        // Utilisation de la Factory pour créer le bon type de séjour automatiquement
+        Sejour leSejour = SejourFactory.createSejour(dateArrivee, duree, maisonParis, nbVoyageurs);
+        
         Reservation laReservation = new Reservation(leSejour, client1);
         
         laReservation.afficher();
