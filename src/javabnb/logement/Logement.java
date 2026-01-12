@@ -3,7 +3,7 @@ package javabnb.logement;
 import javabnb.Utilisateurs.Personne;
 
 
-public class Logement {
+public abstract class Logement {
 
     private Personne proprietaire;
     private int prixNuit;
@@ -35,13 +35,10 @@ public class Logement {
         return surface;
     }
 
-    public void afficherDetails() {
-        System.out.println("\n========== Informations du logement ==========");
-        System.out.print("Propriétaire : ");
-        this.proprietaire.afficherInfos();
-        System.out.println("\nAdresse : " + this.adresse);
-        System.out.println("Surface habitable : " + this.surface + " m²");
-        System.out.println("Tarif : " + this.prixNuit + "€ par nuit");
+    public int getCapaciteMax() {
+        return capaciteMax;
     }
+
+    public abstract void afficherDetails();
 
 }

@@ -5,7 +5,7 @@ import javabnb.logement.Logement;
 import javabnb.utils.Utils;
 
 
-public class Sejour {
+public class Sejour implements Reservable {
 
     private Date dateDebut;
     private int dureeNuits;
@@ -29,7 +29,8 @@ public class Sejour {
         this.nombrePersonnes = personnes;
     }
 
-    public void afficherReservation() {
+    @Override
+    public void afficher() {
         this.hebergement.afficherDetails();
         System.out.println("\n--- Détails de la réservation ---");
         System.out.println("Date d'arrivée : " + Utils.formatterDate(this.dateDebut));
@@ -54,7 +55,7 @@ public class Sejour {
 
     private int calculerPrixTotal() {
         int montantTotal = this.hebergement.getPrixNuit() * this.dureeNuits;
-        
+
         /*
          Il y a une réduction si on reste plus de 5 nuits
          Je multiplie par 0.8 pour avoir 20% de réduction
@@ -62,8 +63,33 @@ public class Sejour {
         if (this.dureeNuits > 5) {
             montantTotal = (int) (montantTotal * 0.8);
         }
-        
+
         return montantTotal;
+    }
+
+    public boolean aUneDateArriveeCorrecte() {
+        Date maintenant = new Date();
+        if (this.dateDebut.after(maintenant)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean aUnNombreDeNuitsCorrect() {
+        if (this.dureeNuits >= 1 && this.dureeNuits <= 31) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean aUnNombreDeVoyageursCorrect() {
+        if (this.nombrePersonnes <= this.hebergement.getCapaciteMax()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
